@@ -17,7 +17,7 @@ DATA_PATH = PATH.joinpath("..").resolve()
 state_county_choices = pd.read_csv(DATA_PATH.joinpath("state_county_fips.csv"))
 
 # setup census viewer
-censusViewer = CensusViewer(vars_config=load_config("vars.json"), api_key='e12de88e1f23dcdd9a802fbbb92b362a1e67c3c4')
+censusViewer = CensusViewer(vars_config=load_config("vars.json"), api_key='')
 
 # List of variable category choices
 vars = censusViewer.available_vars
