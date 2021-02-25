@@ -23,35 +23,197 @@ censusViewer = CensusViewer(vars_config=load_config("vars.json"), api_key='')
 vars = censusViewer.available_vars
 varcategories = [var[0] for var in vars]
 
-layout = html.Div([
-    html.H1('Census County Data', style={"textAlign": "center"}),
+# the style arguments for the sidebar.
+SIDEBAR_STYLE = {
+    'position': 'fixed',
+    'left': 0,
+    'width': '20%',
+    'padding': '20px 10px',
+    'background-color': '#f8f9fa'
+}
 
-    html.Div([
-        html.Div(dcc.Dropdown(
+# the style arguments for the main content page.
+CONTENT_STYLE = {
+    'margin-left': '25%',
+    'margin-right': '5%',
+    'padding': '20px 10p'
+}
+
+TEXT_STYLE = {
+    'textAlign': 'center',
+    'color': '#191970'
+}
+
+CARD_TEXT_STYLE = {
+    'textAlign': 'center',
+    'color': '000000'
+}
+
+controls = dbc.FormGroup(
+    [
+        html.P('Pick States', style={
+            'textAlign': 'center'
+        }),
+        dcc.Dropdown(
             id='states-dropdown', value=None, clearable=False,
             options=[{'label': x, 'value': x} for x in state_county_choices["State"].unique()],
             multi=True
-        ), className='six columns', style={'width': '20%'}),
-
-        html.Div(dcc.Dropdown(
+        ),
+        html.Br(),
+        html.P('Pick Counties', style={
+            'textAlign': 'center'
+        }),
+        dcc.Dropdown(
             id='county-dropdown', value='Autauga County, Alabama', clearable=False,
             options=[],
             multi=True
-        ), className='six columns', style={'width': '30%'}),
-
-        html.Div(dcc.Dropdown(
+        ),
+        html.P('Pick Years', style={
+            'textAlign': 'center'
+        }),
+        dbc.Card([dbc.Checklist(
+            id='check_list',
+            options=[{
+                'label': '2018',
+                'value': 'value1'
+            },
+                {
+                    'label': '2019',
+                    'value': 'value2'
+                },
+                {
+                    'label': '2020',
+                    'value': 'value3'
+                }
+            ],
+            value=['value1', 'value2'],
+            inline=True
+        )]),
+        html.Br(),
+        html.P('Pick Variable Categories', style={
+            'textAlign': 'center'
+        }),
+        dcc.Dropdown(
             id='vars-dropdown', placeholder="Select variables",
             persistence=True, persistence_type='memory',
             options=[{'label': x, 'value': x} for x in varcategories],
             multi=True
-        ), className='six columns', style={'width': '30%'}),
-     ], className='row'),
-    #
-    # dcc.Graph(id='my-bar', figure={}),
-    dash_table.DataTable(id='table', columns=[], data=[],
-                         style_cell={'textAlign': 'left'},
-                         export_format="csv",),
+        ),
+        html.Br(),
+        dbc.Button(
+            id='submit_button',
+            n_clicks=0,
+            children='Submit',
+            color='primary',
+            block=True
+        ),
+    ]
+)
+
+sidebar = html.Div(
+    [
+        html.H3('Filter a Data Selection', style=TEXT_STYLE),
+        html.Hr(),
+        controls
+    ],
+    style=SIDEBAR_STYLE,
+)
+
+content_first_row = dbc.Row(
+    [
+        dbc.Col(
+            dcc.Graph(id='graph_1'), md=4
+        ),
+        dbc.Col(
+            dcc.Graph(id='graph_2'), md=4
+        ),
+        dbc.Col(
+            dcc.Graph(id='graph_3'), md=4
+        )
+    ]
+)
+
+content_second_row = dbc.Row([
+    dbc.Col(
+        dbc.Card(
+            [
+
+                dbc.CardBody(
+                    [
+                        html.H4(id='card_title_1', children=['Insight 1'], className='card-title',
+                                style=CARD_TEXT_STYLE),
+                        html.P(id='card_text_1', children=['This chart shows us'], style=CARD_TEXT_STYLE),
+                    ]
+                )
+            ], color='#a9dad6'
+        ),
+        md=4
+    ),
+    dbc.Col(
+        dbc.Card(
+            [
+
+                dbc.CardBody(
+                    [
+                        html.H4('Insight 2', className='card-title', style=CARD_TEXT_STYLE),
+                        html.P('This chart shows us', style=CARD_TEXT_STYLE),
+                    ]
+                ),
+            ], color='#e54e4b'
+
+        ),
+        md=4
+    ),
+    dbc.Col(
+        dbc.Card(
+            [
+                dbc.CardBody(
+                    [
+                        html.H4('Insight 3', className='card-title', style=CARD_TEXT_STYLE),
+                        html.P('This chart shows us', style=CARD_TEXT_STYLE),
+                    ]
+                ),
+            ], color='#f2d479'
+
+        ),
+        md=4
+    )
 ])
+
+content_third_row = dbc.Row(
+    [
+        dbc.Col(
+            dash_table.DataTable(id='table', columns=[], data=[],
+                                 style_cell={'textAlign': 'left'},
+                                 export_format="csv", ), md=12,
+        )
+    ]
+)
+
+# content_fourth_row = dbc.Row(
+#     [
+#         dbc.Col(
+#             dcc.Graph(id='graph_5'), md=6
+#         ),
+#         dbc.Col(
+#             dcc.Graph(id='graph_6'), md=6
+#         )
+#     ]
+# )
+
+content = html.Div(
+    [
+        html.H3('Census Results', style=TEXT_STYLE),
+        content_first_row,
+        content_second_row,
+        content_third_row
+        #content_fourth_row
+    ],
+    style=CONTENT_STYLE
+)
+
+layout = html.Div([sidebar, content])
+
 
 
 # Populate the counties dropdown with options and values
@@ -87,15 +249,3 @@ def fill_table(svars, scounties):
     cols[0]['name'] = 'Variable'
     dat = fulldf.to_dict('records')
     return cols, dat
-#
-# @app.callback(
-#     Output(component_id='my-bar', component_property='figure'),
-#     [Input(component_id='genre-dropdown', component_property='value'),
-#      Input(component_id='sales-dropdown', component_property='value')]
-# )
-# def display_value(genre_chosen, sales_chosen):
-#     dfv_fltrd = dfv[dfv['Genre'] == genre_chosen]
-#     dfv_fltrd = dfv_fltrd.nlargest(10, sales_chosen)
-#     fig = px.bar(dfv_fltrd, x='Video Game', y=sales_chosen, color='Platform')
-#     fig = fig.update_yaxes(tickprefix="$", ticksuffix="M")
-#     return fig
