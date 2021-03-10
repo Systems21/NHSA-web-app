@@ -16,7 +16,7 @@ state_county_choices = pd.read_csv("state_county_fips.csv")
 # read in variable choices
 vardf = pd.read_csv('census_vars_V2.csv')
 # setup census viewer
-censusViewer = CensusViewer(api_key='e12de88e1f23dcdd9a802fbbb92b362a1e67c3c4')
+censusViewer = CensusViewer(api_key='')
 # List of variable category choices
 varcategories = censusViewer.available_categories()
 
