@@ -2,49 +2,20 @@ from itertools import product
 from functools import reduce
 from multiprocessing import Pool
 import pandas as pd
-import plydata
 import censusdata
 
 
 N_PROCESSES = 4
-dat = pd.read_csv('state_county_fips.csv', dtype = str)
+state_county_fips = pd.read_csv('state_county_fips.csv', dtype=str)
+vardf = pd.read_csv('census_vars_V2.csv')
 
 class CensusViewer:
-    def __init__(self, vars_config, api_key):
-        self._vars_config = vars_config
+    def __init__(self, api_key):
         self.api_key = api_key
-
-    @property
-    def vars_config(self):
-        return [dict(var, id=i) for i, var in enumerate(self._vars_config)]
     
-    @property
-    def available_categories(self):
-        return sorted(list(set([var["category"] for var in self.vars_config])))
-
-    def _build_geos(self, geo_names, geo_type="county"):
-        '''
-        Builds list of state, county fips code pairs to pass to census api
-        args:
-            geo_names (List[Tuple[str, str]]): List of state, county name pairs
-            geo_type: Geography type
-        returns:
-            List[List[str, str]]
-        '''
-        
-        if geo_type != "county":
-            raise NotImplementedError
-
-        # build list of state-county fips code pairs
-        geo_fips = []
-        for state, county in geo_names:
-            geo_fips.append(
-                [
-                    self.geoDB.get_state_fips(state),
-                    self.geoDB.get_county_fips(state, county),
-                ]
-            )
-        return geo_fips
+    @staticmethod
+    def available_categories():
+        return sorted(list(vardf.category.unique()))
 
     @staticmethod
     def _build_state_dataframe(state_fips, var_ids, src, year, tabletype, api_key):
@@ -66,67 +37,10 @@ class CensusViewer:
             tabletype=tabletype,
         )
 
-        # we'll need this
-        #     all_state_data = all_state_data.append(state_data)
-
         return state_fips, state_data
 
-    @staticmethod
-    def _apply_transforms(df, definitions):
-        """
-        df (Pandas.DataFrame): Dataframe containing raw data queried from Census
-            API
-        definitions (List[Tuple[str, str]]): List of (name, definition) pairs.
-            Column definitions should be strings containing valid Python expressions. 
-            Expressions can reference other columns in df by name. Example:
-            [
-                (
-                    "Column Name",
-                    "(B02001_001E - B02001_002E) / B02001_001E"
-                )
-            ]
-            This expression references columns containing data for census variables
-            B02001_001E (population, all races) and B02001_002E (population, white).
-            It calculates the proportion of a geography's population identifying as 
-            a race other than White.
-            See https://plydata.readthedocs.io/en/latest/generated/plydata.one_table_verbs.define.html
-            for more on how these expressions are evaluated 
-        returns (Pandas DataFrame): Dataframe containing transformed columns
-        """
-
-        all_vars = df.columns.values
-        df = plydata.define(df, *definitions).drop(all_vars, axis=1)
-        return df
-
-    def _build_formatted_dataframe(self, df, selected_vars):
-
-        """
-        Formats raw census data:
-        - applies column definitions specified in vars_config
-        - does various munging to get nicely formatted data
-        df (Pandas.dataframe): dataframe containing raw data queried from Census
-            API
-        selected_vars (List[Dict]): List of variables (vars_config filtered based 
-            on user selection) 
-        returns (Pandas.dataframe): well-formatted dataframe suitable for consumption
-            by later view functions
-        """
-
-        column_definitions = [(var["name"], var["definition"]) for var in selected_vars]
-
-        transformed_county_data = self._apply_transforms(df, column_definitions)
-
-        vars_df = pd.DataFrame.from_dict(self.vars_config)[["category", "name"]]
-        formatted_data = (
-            transformed_county_data.transpose()
-            .reset_index()
-            .rename({"index": "name"}, axis=1)
-            .merge(vars_df, on="name")
-        )
-        return formatted_data
-
     def _build_dataframe(
-        self, county_names, selected_vars, descriptions=False, src="acs5", year=2018
+        self, county_names, states, selected_cats, descriptions=False, src="acs5", year=2019
     ):
         """
         Creates dataframe view of variables in requested counties. Main helper 
@@ -145,9 +59,7 @@ class CensusViewer:
 
         # generate list of selected census api variable ids
 
-        all_vars = []
-        for var in selected_vars:
-            all_vars += var["vars"]
+        all_vars = list(vardf[vardf.category.isin(selected_cats)].vars)
 
         tabletypes = [
             ("B", r"detail"),
@@ -156,10 +68,6 @@ class CensusViewer:
             ("CP", r"cprofile"),
         ]
 
-        all_vars = []
-        for var in selected_vars:
-            all_vars += var["vars"]
-
         # Within one census api query, all vars must be from same table type &
         # all counties must be from same state. So we make one call to 
         # censusdata.download for each state x tabletype.  
@@ -167,8 +75,13 @@ class CensusViewer:
         # So:
         # 1. build list of states
 
-        states = set(state for state, _ in county_names)
-        state_fips = list(dat[dat['State'].isin(states)].State_FIPS.unique())
+        raw_fips = list(state_county_fips[state_county_fips['State'].isin(states)].State_FIPS.unique())
+        state_fips = []
+        for fip in raw_fips:
+            if len(fip)==2:
+                state_fips.append(fip)
+            elif len(fip) != 2:
+                state_fips.append('0' + fip)
 
         # 2. build list of tabletypes (& corresponding vars)
 
@@ -225,75 +138,9 @@ class CensusViewer:
             .filter([f"{county}, {state}" for state, county in county_names], axis=0)
         )
 
-        # 7. format (apply column definitions)
+        return raw_data
 
-        formatted_county_data = self._build_formatted_dataframe(raw_data, selected_vars)
-
-        if descriptions:
-            pass
-
-        return formatted_county_data
-
-    def _build_dict_view(self, df, categories):
-        '''
-        Converts df view to dict.
-        
-        args:
-            df (Pandas.dataframe): dataframe output of queried data
-            categories (List[str]): List of category names
-        '''
-
-        formatted_data_dict = dict()
-        for category in categories:
-            rows = df.loc[df.category == category].drop("category", axis=1).values
-            if rows.ndim == 1:
-                rows = [rows.tolist()]
-            else:
-                rows = rows.tolist()
-            formatted_data_dict[category] = rows
-        return formatted_data_dict
-
-    def view_dict(self, county_names, selected_var_ids, src="acs5", year=2018):
-
-        """
-        Builds view of census data stored in a dict that's consumed
-        by Flask renderer.
-        Args:
-            county_names (list[list(str, str)]): List of county, state name pairs
-            src (str): data.census.gov API source to be used. (currently unused)
-            year (int): Year to query census data. (currently unused)
-        returns (dict, list[str]):
-        -   dict containing census output formatted to be consumed by renderer.
-            schema:
-                {
-                    'category_name':[
-                        [col1_data, col2_data, ...],
-                        ...
-                    ],
-                }
-        -   List of column names
-        """
-
-        selected_vars = [
-            var for var in self.vars_config if str(var["id"]) in selected_var_ids
-        ]
-
-        county_data = self._build_dataframe(county_names, selected_vars)
-
-        county_data_dict = self._build_dict_view(
-            county_data, sorted(list(set([var["category"] for var in selected_vars])))
-        )
-
-        formatted_county_names = [
-            "{county}, {state}".format(state=state, county=county)
-            for state, county in county_names
-        ]
-
-        colnames = ["Column Name"] + formatted_county_names
-
-        return county_data_dict, colnames
-
-    def view_df(self, county_names, selected_var_ids):
+    def view_df(self, county_names, states, selected_cats):
 
         """
         Builds view of census data stored in a Pandas dataframe
@@ -303,40 +150,12 @@ class CensusViewer:
             year (int): Year to query census data. (currently unused)
         returns Pandas.DataFrame
         """
-
-        selected_vars = [
-            var for var in self.vars_config if str(var["id"]) in selected_var_ids
-        ]
-
-        return self._build_dataframe(county_names, selected_vars)
-
-    @property
-    def available_vars(self):
-        """
-        Returns available variables. Partially constructs html for each option's
-        tooltip.
-        """
-
-        var_list = []
-
-        #TODO: Refactor tooltip HTML insertion to view level. Current approach is... kinda hacky
-
-        for category in self.available_categories:
-            cat_list = [
-                tuple(
-                    [
-                        {
-                            "value": var["id"],
-                            # adds tooltip to be rendered by bootstrap-select multiselect component
-                            "data-content": '<a data-toggle="tooltip" title="{}">{}</a>'.format(
-                                var.get("description", ""), var["name"]
-                            ),
-                        },
-                        var["name"],
-                    ]
-                )
-                for var in self.vars_config
-                if var["category"] == category
-            ]
-            var_list.append(tuple([category, tuple(cat_list)]))
-        return var_list
+        fulldf = self._build_dataframe(county_names, states, selected_cats)
+        # translate census jargon var names to descriptive features
+        vars_english = {id: vardf[vardf['vars'] == id]['name'].tolist()[0] for id in fulldf.columns}
+        fulldf = fulldf.rename(columns = vars_english).transpose()
+        fulldf["Variable"] = fulldf.index
+        fulldf = fulldf.merge(vardf[['name', 'category']], left_on = "Variable", right_on = "name", how = "left").drop(columns=['name'])
+        first_col = fulldf.pop('Variable')
+        fulldf.insert(0, 'Variable', first_col)
+        return fulldf

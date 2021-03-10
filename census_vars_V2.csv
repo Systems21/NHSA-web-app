@@ -1,0 +1,190 @@
+category,name,vars,description
+Race,Race Total,B02001_001E,Total population
+Race,White,B02001_002E,White population
+Race,Black or African American,B02001_003E,Black/African American population
+Race,American Indian and Alaska Native,B02001_004E,American Indian/Alaskan Native population
+Race,Asian,B02001_005E,Asian population
+Race,Native Hawaiian and Other Pacific,B02001_006E,Native Hawaiian/Other Pacific population
+Race,Some other race,B02001_007E,Other racial group population
+Race,2+ races,B02001_008E,Biracial/Multiracial population
+Household Type,Total Family Households (with children under 18),DP02_0004E,Total number of family households with children under 18
+Household Type,Married-couple family (with children under 18),DP02_0005E,Number of married couple family households with children under 18
+Household Type,"Male householder, no spouse present (with children under 18)",DP02_0007E,Number of male householder family households with children under 18
+Household Type,"Female householder, no spouse present (with children under 18)",DP02_0009E,Number of female householder family households with children under 18
+School Enrollment,Enrolled in kindergarten,DP02_0054E,Number of children over 3 enrolled in kindergarten
+School Enrollment,Enrolled in nursery school or preschool,DP02_0053E,Number of children over 3 enrolled in nursery school or preschool
+Languages Spoken at Home,English Only,DP02_0111E,Number of people who only speak english
+Languages Spoken at Home,Languages other than English,DP02_0112E,Number of people who speak languages other than english
+Computers and Internet Use,Total Households,DP02_0150E,Total Households
+Computers and Internet Use,Households with a computer,DP02_0151E,Number of households with a computer
+Computers and Internet Use,Households with internet,DP02_0152E,Number of households with internet
+Commuting to Work,"Car, truck, or van -- drove alone",DP03_0019E,"Number of workers who commute alone using a car, truck, or van"
+Commuting to Work,"Car, truck, or van -- carpooled",DP03_0020E,"Number of workers who commute via carpool using a car, truck, or van"
+Commuting to Work,Public transportation,DP03_0021E,Number of workers who commute using public transportation
+Commuting to Work,Walked,DP03_0022E,Number of workers who commute by walking
+Commuting to Work,Worked at home,DP03_0024E,Number of workers who work at home
+Commuting to Work,Other,DP03_0023E,Number of workers who commute using other transportation methods
+Employment Status,Employed,DP03_0004E,Employed population
+Employment Status,Unemployed,DP03_0005E,Unemployed population
+Employment Status,Armed Forces,DP03_0006E,Population enlisted in the armed forces
+Employment Status,Not in Labor Force,DP03_0007E,Population that is not in the labor force
+Sex,Population: Female,B01001_026E,Female population
+Sex,Population: Male,B01001_002E,Male population
+Households and Families,Total Households,S1101_C01_001E,Total number of households
+Households and Families,Average Household Size,S1101_C01_002E,Average number of poeple living in 1 household
+Households and Families,Total Families,S1101_C01_003E,Number of families
+Households and Families,Average Family Size,S1101_C01_004E,Average family size (average number of people in a family)
+Occupation,"Management, business, science, and arts occupations",DP03_0027E,"Number of people with occupations in management, science, business, and arts"
+Occupation,Service occupations,DP03_0028E,Number of people with occupations in service
+Occupation,Sales and office occupations,DP03_0029E,Number of people with sales and office occupations
+Occupation,"Natural resources, construction, and maintenence occupations",DP03_0030E,"Number of people with natural resources, construction, and maintenence occupations"
+Occupation,"Production, transportation, and material moving occupations",DP03_0031E,"Number of people with production, transportation, and material moving occupations"
+Industry,"Agriculture, forestry, fishing, hunting, and mining",DP03_0033E,"Number of people employed in the agriculture, forestry, fishing, hunting, and mining industry"
+Industry,Construction,DP03_0034E,Number of people employed in the construction industry
+Industry,Manufacturing,DP03_0035E,Number of people employed in the manufacturing industry
+Industry,Wholesale trade,DP03_0036E,Number of people employed in the wholesale trade industry
+Industry,Retail Trade,DP03_0037E,Number of people employed in the retail trade industry
+Industry,"Transportation and warehousing, and utilities",DP03_0038E,"Number of people employed in the transportation and warehousing, and utilities industry"
+Industry,Information,DP03_0039E,Number of people employed in the information industry
+Industry,"Finance and insurance, and real estate and rental and leasing",DP03_0040E,"Number of people employed in the finance and insurance, and real estate and rental and leasing industry"
+Industry,"Professional, scientific, and management, and administrative and waste management services",DP03_0041E,"Number of people employed in the professional, scientific, and management, and administrative and waste management services industry"
+Industry,"Educational services, and health care and social assistance",DP03_0042E,"Number of people employed in the educational services, and health care and social assistance industry"
+Industry,"Arts, entertainment, and recreation, and accomodation and food services",DP03_0043E,"Number of people employed in the arts, entertainment, and recreation, and accomodation and food services industry"
+Industry,"Other services, except public administration",DP03_0044E,"Number of people employed in other industries, excluding public adminsitration"
+Industry,Public administraiton,DP03_0045E,Number of people employed in the public administration industry
+Class of Worker,Private wage and salary workers,DP03_0047E,Number of private wage and salary workers
+Class of Worker,Government workers,DP03_0048E,Number of government workers
+Class of Worker,Self-employed in own not incorporated business workers,DP03_0049E,Number of workers who are self employed in a non-incorporated business
+Ethnicity,Hispanic or Latino (any race),DP05_0071E,Hispanic/Latino population
+Ethnicity,Not Hispanic or Latino,DP05_0076E,Not-Hispanic/Latino population
+Grandparents (responsible for grandchildren under 5),Grandparents responsible for grandchildren under 1,DP02_0045E,Number of grandparents who are responsible for caring for a grandchild under 1
+Grandparents (responsible for grandchildren under 5),Grandparents responsible for grandchildren ages 1-2,DP02_0046E,Number of grandparents who are responsible for caring for a grandchild between the ages of 1 and 2
+Grandparents (responsible for grandchildren under 5),Grandparents responsible for grandchildren ages 3-4,DP02_0047E,Number of grandparents who are responsible for caring for a grandchild between the ages of 3 and 4
+Housing Occupancy,Occupied Housing Units,DP04_0002E,Total number of occupied housing units
+Housing Occupancy,Vacant Housing Units,DP04_0003E,Total number of vacant housing units
+Housing Occupancy,Homeowner vacancy rate,DP04_0004E,The percentage of all available homeowner units that are vacant or unoccupied at a particular time
+Housing Occupancy,Rental vacancy rate,DP04_0005E,The percentage of all available rental units that are vacant or unoccupied at a particular time
+Housing Occupancy,Owner occupied,DP04_0046E,Number of owner occupied housing units
+Housing Occupancy,Renter occupied,DP04_0047E,Number of renter occupied housing units
+Housing Occupancy,Average household size of owner occupied unit,DP04_0048E,Average number of people living in an owner-occupied housing unit
+Housing Occupancy,Average household size of renter occupied unit,DP04_0049E,Average number of people living in a renter-occupied housing unit
+Rent (Gross Rent),Total occupied units paying rent,DP04_0126E,Total number of occupied housing units paying rent
+Rent (Gross Rent),Less than $500,DP04_0127E,Number of housing units in which rent costs less than $500
+Rent (Gross Rent),$500 to $999,DP04_0128E,Number of housing units in which rent costs between $500 and $999
+Rent (Gross Rent),"$1,000 to $1,499",DP04_0129E,Number of housing units in which rent costs between $1000and $1499
+Rent (Gross Rent),"$1,500 to $1,999",DP04_0130E,Number of housing units in which rent costs between $1500 and $1999
+Rent (Gross Rent),"$2,000 to $2,499",DP04_0131E,Number of housing units in which rent costs between $2000 and $2499
+Rent (Gross Rent),"$2,500 to $2,999",DP04_0132E,Number of housing units in which rent costs between $2500 and $2999
+Rent (Gross Rent),"$3,000 or more",DP04_0133E,Number of housing units in which rent costs between $3000 or more
+Rent (Gross Rent),No rent paid,DP04_0135E,"Number of housing units in which rent is due, but not paid"
+Rent (Gross Rent),Median gross rent (dollars),DP04_0134E,Median rent
+Rent (% of income),Less than 15%,DP04_0137E,Number of housing units in which rent costs less than 15% of the renter's income
+Rent (% of income),15% - 19.9%,DP04_0138E,Number of housing units in which rent costs between 15% and 19.9% of the renter's income
+Rent (% of income),20% - 24.9%,DP04_0139E,Number of housing units in which rent costs between 20% and 24.9% of the renter's income
+Rent (% of income),25% - 29.9%,DP04_0140E,Number of housing units in which rent costs between 25% and 29.9% of the renter's income
+Rent (% of income),30% - 34.9%,DP04_0141E,Number of housing units in which rent costs between 30% and 34.9% of the renter's income
+Rent (% of income),35% or more,DP04_0142E,Number of housing units in which rent costs more than 35% of the renter's income
+Rent (% of income),Total Units Paying Rent,DP04_0136E,Total number of occupied housing units paying rent
+Vehciles Available,No Vehciles Available,DP04_0057E,Number of households with no personal vehicles
+Vehciles Available,1 vehicle available,DP04_0058E,Number of households with 1 personal vehicle
+Vehciles Available,2 vehicles available,DP04_0059E,Number of households with 2 personal vehicles
+Vehciles Available,3+ vehicles available,DP04_0060E,Number of households with 3 or more personal vehicles
+Household Utilities,Total Occupied Housing Units,DP04_0072E,Total number of occupied housing units
+Household Utilities,Lacking complete plumbing facilities,DP04_0073E,Number of housing units that lack complete plumbing facilities
+Household Utilities,Lacking complete kitchen facilities,DP04_0074E,Number of housing units that lack complete kitchen facilities
+Household Utilities,No telephone service,DP04_0075E,Number of housing units that lack telephone service
+Household Composition (children under 6),Households with children under 6,B23008_002E,Number of households with children under the age of 6
+Household Composition (children under 6),Living with two parents,B23008_003E,Number of children living in a household with two parents present
+Household Composition (children under 6),Living with two parents (both in labor force),B23008_004E,"Number of children living in a household with two parents, both of whom are in the labor force"
+Household Composition (children under 6),Living with two parents (father only in labor force),B23008_005E,"Number of children living in a household with two parents, with the father in the labor force"
+Household Composition (children under 6),Living with two parents (mother only in labor force),B23008_006E,"Number of children living in a household with two parents, with the mother in the labor force"
+Household Composition (children under 6),Living with two parents (neither parent in labor force),B23008_007E,"Number of children living in a household with two parents, with neither parent in the labor force"
+Household Composition (children under 6),Living with one parent,B23008_008E,Number of children living in a household with one parent present
+Household Composition (children under 6),Living with father,B23008_009E,Number of children living in a household with only the father present
+Household Composition (children under 6),Living with father (in labor force),B23008_010E,"Number of children living in a household with only the father, who is in the labor force, present"
+Household Composition (children under 6),Living with father (not in labor force),B23008_011E,"Number of children living in a household with only the father, who is not in the labor force, present"
+Household Composition (children under 6),Living with mother,B23008_012E,Number of children living in a household with only the mother present
+Household Composition (children under 6),Living with mother (in labor force),B23008_013E,"Number of children living in a household with only the mother, who is in the labor force, present"
+Household Composition (children under 6),Living with mother (not in labor force),B23008_014E,"Number of children living in a household with only the mother, who is not in the labor force, present"
+"SSI, Cash Public Assistance, Food Stamps","Family households receiving SSI, cash public assistance, or food stamps",B09010_003E,"Number of family households receiving SSI, cash public assistance, or food stamps"
+Fertility,Number of women 15 to 50 years old who had a birth in the past 12 months,DP02_0036E,Total number of women 15 to 50 years old who had a birth in the past 12 months
+Fertility,Number of unmarried women who had a birth in the past 12 months,DP02_0037E,Number of unmarried women who had a birth in the past 12 months
+Educational Attainment,Less than 9th grade,DP02_0059E,Population with less than a 9th grade education
+Educational Attainment,"9th - 12th grade, no diploma",DP02_0060E,Population with between a 9th grade and 12th grade education
+Educational Attainment,High school graduate,DP02_0061E,Population with a high school diploma or GED
+Educational Attainment,"Some college, no degree",DP02_0062E,Population that completed some college
+Educational Attainment,Associate's degree,DP02_0063E,Population with an associate's degree
+Educational Attainment,Bachelor's degree,DP02_0064E,Population with a bachelor's degree
+Educational Attainment,Graduate or professional degree,DP02_0065E,Population with a graduate or professional degree
+Citizenship Status,Born in the US,DP02_0095E,Number of citizens born in the US
+Citizenship Status,"Born in Puerto Rico, U.S. Island areas, or born abroad to American parent(s)",DP02_0091E,"Number of citizens born in Puerto Rico, the US islands, or to American parents"
+Citizenship Status,Naturalized US Citizen,DP02_0094E,Number of naturalized US citizens
+Citizenship Status,Not a US Citizen,DP02_0095E,Number of residents who are not US citizens
+Income & Benefits (Family Households),Total Family Households,DP03_0075E,Total number of family households
+Income & Benefits (Family Households),"Less than $10,000",DP03_0076E,"Number of family households with an income less than $10,000"
+Income & Benefits (Family Households),"$10,000 to $14,999",DP03_0077E,"Number of family households with an income between $10,000 and $14,999"
+Income & Benefits (Family Households),"$15,000 to $24,999",DP03_0078E,"Number of family households with an income between $15,000 and $24,999"
+Income & Benefits (Family Households),"$25,000 to $34,999",DP03_0079E,"Number of family households with an income between $25,000 and $34,999"
+Income & Benefits (Family Households),"$35,000 to $49,999",DP03_0080E,"Number of family households with an income between $35,000 and $49,999"
+Income & Benefits (Family Households),"$50,000 to $74,999",DP03_0081E,"Number of family households with an income between $50,000 and $74,999"
+Income & Benefits (Family Households),"$75,000 to $99,999",DP03_0082E,"Number of family households with an income between $75,000 and $99,999"
+Income & Benefits (Family Households),"$100,000 to $149,999",DP03_0083E,"Number of family households with an income between $100,000 and $149,999"
+Income & Benefits (Family Households),"$150,000 to $199,999",DP03_0084E,"Number of family households with an income between $150,000 and $199,999"
+Income & Benefits (Family Households),"$200,000 or more",DP03_0085E,"Number of family households with an income above $200,000"
+Income & Benefits (Family Households),Median family income,DP03_0086E,Median family income
+Income & Benefits (Family Households),Mean family income,DP03_0087E,Mean family income
+Health Insurance Coverage,Civilian noninstitutionalized population,DP03_0095E,Civilian noninstitutionalized population
+Health Insurance Coverage,Civilian noninstitutionalized population with private health insurance coverage,DP03_0097E,Civilian noninstitutionalized population with private health insurance coverage
+Health Insurance Coverage,Civilian noninstitutionalized population with public health insurance coverage,DP03_0098E,Civilian noninstitutionalized population with public health insurance coverage
+Health Insurance Coverage,Civilian noninstitutionalized population without health insurance coverage,DP03_0099E,Civilian noninstitutionalized population without health insurance coverage
+Health Insurance Coverage,Civilian noninstitutionalized population (under 19),DP03_0100E,Civilian noninstitutionalized population under 19 years
+Health Insurance Coverage,Civilian noninstitutionalized population (under 19) without health insurance coverage,DP03_0101E,Civilian noninstitutionalized population under 19 years without health insurance coverage
+Population by poverty level,Below 50% of the poverty level,S1701_C01_038E,Population within 50% of poverty level
+Population by poverty level,Below 125% of the poverty level,S1701_C01_039E,Population within 125% of poverty level
+Population by poverty level,Below 150% of the poverty level,S1701_C01_040E,Population within 150% of poverty level
+Population by poverty level,Below 185% of the poverty level,S1701_C01_041E,Population within 185% of poverty level
+Population by poverty level,Below 200% of the poverty level,S1701_C01_042E,Population within 200% of poverty level
+Population by poverty level,Below 300% of the poverty level,S1701_C01_043E,Population within 300% of poverty level
+Population by poverty level,Below 400% of the poverty level,S1701_C01_044E,Population within 400% of poverty level
+Population by poverty level,Below 500% of the poverty level,S1701_C01_045E,Population within 500% of poverty level
+Population in Poverty by Race,White,S1701_C01_013E,White population in poverty
+Population in Poverty by Race,Black or African American,S1701_C01_014E,Black/African American population in poverty
+Population in Poverty by Race,American Indian and Alaska Native,S1701_C01_015E,American Indian/Alaskan Native population in poverty
+Population in Poverty by Race,Asian,S1701_C01_016E,Asian population in poverty
+Population in Poverty by Race,Native Hawaiian and Other Pacific Islander,S1701_C01_017E,Native Hawaiian/Other Pacific Population in poverty
+Population in Poverty by Race,Some other race,S1701_C01_018E,Other racial group population in poverty
+Population in Poverty by Race,Two or more races,S1701_C01_019E,Biracial population in poverty
+Population in Poverty by Race,Hispanic or Latino origin (of any race),S1701_C01_020E,Hispanic/Latino population in poverty
+Population in Poverty by Race,"White, not Hispanic or Latino",S1701_C01_021E,Non-hispanic/Latino population in poverty
+Population in Poverty by Age,Under 5,S1701_C02_003E,Population under 5 in poverty
+Population in Poverty by Age,5-17 years,S1701_C02_004E,Population between 5 and 7 years old in poverty
+Population in Poverty by Age,18-34 years,S1701_C02_007E,Population between 18 and 34 years old in poverty
+Population in Poverty by Age,35-64 years,S1701_C02_008E,Population between 35 and 64 years old in poverty
+Population in Poverty by Age,65 years and older,S1701_C02_010E,Population over the age of 65 in poverty
+Population in Poverty by Sex,Male,S1701_C02_011E,Male population in poverty
+Population in Poverty by Age,Female,S1701_C02_012E,Female population in poverty
+Population by Commute Length,Less than 10 minutes,B08135_002E,Number of people who have a commute that lasts less than 10 minutes
+Population by Commute Length,60+ minutes,B08135_010E,Number of people who have a commute that lasts over 1 hour
+Population Living With Disabilities,Children under 5 with Disabilities (total),S1810_C02_013E,Number of children under 5 with disabilities
+Population Living With Disabilities,Children under 5 with hearing difficulty,S1810_C02_021E,Number of children under 5 with hearing difficulty
+Population Living With Disabilities,Children under 5 with vision difficulty,S1810_C02_031E,Number of children under 5 with vision difficulty
+Population Living With Disabilities,Children under 18 with cognitive difficulty,S1810_C01_040E,Number of children under 18 with cognitive difficulty
+Population Living With Disabilities,Children under 18 with ambulatory difficulty,S1810_C01_048E,Number of children under 18 with ambulatory difficulty
+Population Living With Disabilities,Children under 18 with self-care difficulty,S1810_C01_056E,Number of children under 5 with self-care difficulty
+Race and Ethnicity,Total Population,B03002_001E,Total Population
+Race and Ethnicity,Not Hispanic or Latino Total,B03002_002E,Not Hispanic or Latino Total
+Race and Ethnicity,Not Hispanic or Latino_White alone,B03002_003E,Not Hispanic or Latino_White alone
+Race and Ethnicity,Not Hispanic or Latino_Black or African American alone,B03002_004E,Not Hispanic or Latino_Black or African American alone
+Race and Ethnicity,Not Hispanic or Latino_American Indian and Alaska Native alone,B03002_005E,Not Hispanic or Latino_American Indian and Alaska Native alone
+Race and Ethnicity,Not Hispanic or Latino_Asian alone,B03002_006E,Not Hispanic or Latino_Asian alone
+Race and Ethnicity,Not Hispanic or Latino_Native Hawaiian and Other Pacific Islander alone,B03002_007E,Not Hispanic or Latino_Native Hawaiian and Other Pacific Islander alone
+Race and Ethnicity,Not Hispanic or Latino_Some other race alone,B03002_008E,Not Hispanic or Latino_Some other race alone
+Race and Ethnicity,Not Hispanic or Latino_Two or more races,B03002_009E,Not Hispanic or Latino_Two or more races
+Race and Ethnicity,Hispanic or Latino Total,B03002_012E,Hispanic or Latino Total
+Race and Ethnicity,Hispanic or Latino_White alone,B03002_013E,Hispanic or Latino_White alone
+Race and Ethnicity,Hispanic or Latino_Black or African American alone,B03002_014E,Hispanic or Latino_Black or African American alone
+Race and Ethnicity,Hispanic or Latino_American Indian and Alaska Native alone,B03002_015E,Hispanic or Latino_American Indian and Alaska Native alone
+Race and Ethnicity,Hispanic or Latino_Asian alone,B03002_016E,Hispanic or Latino_Asian alone
+Race and Ethnicity,Hispanic or Latino_Native Hawaiian and Other Pacific Islander alone,B03002_017E,Hispanic or Latino_Native Hawaiian and Other Pacific Islander alone
+Race and Ethnicity,Hispanic or Latino_Some other race alone,B03002_018E,Hispanic or Latino_Some other race alone
+Race and Ethnicity,Hispanic or Latino_Two or more races,B03002_019E,Hispanic or Latino_Two or more races
