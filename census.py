@@ -2,12 +2,14 @@ from itertools import product
 from functools import reduce
 from multiprocessing import Pool
 import pandas as pd
+from datetime import date
 import censusdata
 
 
 N_PROCESSES = 4
 state_county_fips = pd.read_csv('state_county_fips.csv', dtype=str)
-vardf = pd.read_csv('census_vars_V2.csv')
+vardf = pd.read_csv('census_vars_V5.csv')
+
 
 class CensusViewer:
     def __init__(self, api_key):
@@ -18,7 +20,7 @@ class CensusViewer:
         return sorted(list(vardf.category.unique()))
 
     @staticmethod
-    def _build_state_dataframe(state_fips, var_ids, src, year, tabletype, api_key):
+    def _call_census(state_fip, var_ids, src, year, tabletype, api_key):
         """
         Queries census API for county-level data
             geos (list[list[str, str]]): List of state, county name pairs
@@ -28,20 +30,28 @@ class CensusViewer:
 
         # build list of var ids, and dict of id-name mappings
 
+        county_data = censusdata.download(
+            src,
+            year,
+            censusdata.censusgeo([("state", state_fip), ("county", "*")]),
+            var_ids,
+            key=api_key,
+            tabletype=tabletype,
+        )
+        
         state_data = censusdata.download(
             src,
             year,
-            censusdata.censusgeo([("state", state_fips), ("county", "*")]),
+            censusdata.censusgeo([("state", state_fip)]),
             var_ids,
             key=api_key,
             tabletype=tabletype,
         )
 
-        return state_fips, state_data
+        return county_data, state_data, year
 
-    def _build_dataframe(
-        self, county_names, states, selected_cats, descriptions=False, src="acs5", year=2019
-    ):
+    def build_dataframe(
+        self, county_names, states, selected_cats, descriptions=False, src="acs5"):
         """
         Creates dataframe view of variables in requested counties. Main helper 
         view function, ie does most of the work of munging frontend queries and 
@@ -53,8 +63,7 @@ class CensusViewer:
             selected_vars (List[Dict]): List of variable dicts
             descriptions (boolean): Boolean controlling whether to include variable
                 descriptions in df output (not implemented)
-            src (str): Census api source parameter
-            year (int): Census api year parameter        
+            src (str): Census api source parameter       
         """
 
         # generate list of selected census api variable ids
@@ -69,19 +78,15 @@ class CensusViewer:
         ]
 
         # Within one census api query, all vars must be from same table type &
-        # all counties must be from same state. So we make one call to 
-        # censusdata.download for each state x tabletype.  
+        # from same year. So we make one call to 
+        # censusdata.download for each year x tabletype.  
 
         # So:
-        # 1. build list of states
+        # 1. get state & county fip - county formatted as list for potential update to allow users to select multiple counties
 
-        raw_fips = list(state_county_fips[state_county_fips['State'].isin(states)].State_FIPS.unique())
-        state_fips = []
-        for fip in raw_fips:
-            if len(fip)==2:
-                state_fips.append(fip)
-            elif len(fip) != 2:
-                state_fips.append('0' + fip)
+        state_fip = list(state_county_fips[state_county_fips['State'].isin(states)].State_FIPS.unique())[0]
+        if len(state_fip)==1:
+            state_fip= '0' + state_fip
 
         # 2. build list of tabletypes (& corresponding vars)
 
@@ -93,69 +98,52 @@ class CensusViewer:
             if tabletype_vars:
                 tabletype_jobs.append([tabletype_vars, tabletype])
 
-        # 3. cross product: states x tabletypes
+        # 3. get list of years
+        
+        year = int(date.today().strftime("%Y"))
+        start = year-6
+        end = year-1
+        years_list = list(range(start,end))
+
+        # 3. cross product: years x tabletypes
 
         census_jobs = []
 
-        for state_fips, (tabletype_vars, tabletype) in product(
-            state_fips, tabletype_jobs
+        for years, (tabletype_vars, tabletype) in product(
+            years_list, tabletype_jobs
         ):
             census_jobs.append(
-                [state_fips, tabletype_vars, src, year, tabletype, self.api_key]
+                [state_fip, tabletype_vars, src, years, tabletype, self.api_key]
             )
 
         # 4. run all of the downloads (in parallel)
 
         pool = Pool(N_PROCESSES)
 
-        raw_dfs = pool.starmap(self._build_state_dataframe, census_jobs)
+        raw_dfs = pool.starmap(self._call_census, census_jobs)
 
-        # 5. merge all
-
-        merged_state_dfs = []
-        for state in set(state for state, _ in raw_dfs):
-            raw_state_dfs = [
-                state_data for state_, state_data in raw_dfs if state_ == state
-            ]
-            merged_state_df = reduce(
-                lambda x, y: pd.merge(
-                    x, y, left_index=True, right_index=True, how="outer"
-                ),
-                raw_state_dfs,
-            )
-
-            merged_state_dfs.append(merged_state_df)
-
-        merged_dfs = pd.concat(
-            merged_state_dfs,
-        )
-
-        # 6. filter on counties
-
-        raw_data = (
-            merged_dfs.assign(county=merged_dfs.index.map(lambda x: x.name))
-            .set_index("county")
-            .filter([f"{county}, {state}" for state, county in county_names], axis=0)
-        )
+        # 5. filter counties and merge all
+        geos = []
+        for geo in raw_dfs[0][0].index.tolist():
+            if geo.name in county_names:
+                geos.append(geo)
+        
+        results = []
+        for result in raw_dfs:
+            countydat = result[0]
+            Fcountydat = countydat[countydat.index.get_level_values(0).isin(geos)]
+            TFcountydat = Fcountydat.T
+            TFcountydat.columns = county_names
+            Tstatedat = result[1].T
+            Tstatedat.columns = ['State']
+            Tstatedat['Year'] = result[2]
+            final = pd.merge(TFcountydat, Tstatedat, left_index=True, right_index=True, how="outer")
+            results.append(final)
+            
+        raw_data = pd.concat(results)
+        
+        # 6. translate census jargon to plain english variables names
+        raw_data['Variable'] = raw_data.apply(lambda x: vardf[vardf['vars'] == x.name]['name'].iloc[0], axis=1)
+        raw_data['Category'] = raw_data.apply(lambda x: vardf[vardf['vars'] == x.name]['category'].iloc[0], axis=1)
 
         return raw_data
-
-    def view_df(self, county_names, states, selected_cats):
-
-        """
-        Builds view of census data stored in a Pandas dataframe
-        Args:
-            county_names (list[list(str, str)]): List of county, state name pairs
-            src (str): data.census.gov API source to be used. (currently unused)
-            year (int): Year to query census data. (currently unused)
-        returns Pandas.DataFrame
-        """
-        fulldf = self._build_dataframe(county_names, states, selected_cats)
-        # translate census jargon var names to descriptive features
-        vars_english = {id: vardf[vardf['vars'] == id]['name'].tolist()[0] for id in fulldf.columns}
-        fulldf = fulldf.rename(columns = vars_english).transpose()
-        fulldf["Variable"] = fulldf.index
-        fulldf = fulldf.merge(vardf[['name', 'category']], left_on = "Variable", right_on = "name", how = "left").drop(columns=['name'])
-        first_col = fulldf.pop('Variable')
-        fulldf.insert(0, 'Variable', first_col)
-        return fulldf
