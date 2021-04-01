@@ -14,7 +14,7 @@ from apps import home, mapviz, fulldatatable, vardetails, contactinfo
 # read in state and county FIPS codes
 state_county_choices = pd.read_csv("state_county_fips.csv")
 # read in variable choices
-vardf = pd.read_csv('census_vars_V2.csv')
+vardf = pd.read_csv('census_vars_V5.csv')
 # setup census viewer
 censusViewer = CensusViewer(api_key='')
 # List of variable category choices
@@ -124,4 +124,4 @@ def display_page(pathname, svars, scounties, sstates):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)
