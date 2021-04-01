@@ -105,8 +105,7 @@ def set_county_options(chosen_state):
                Input('states-dropdown', 'value')])
 def display_page(pathname, svars, scounties, sstates):
     # format user selections for census api calls
-    selected_counties = [[state.strip(), county] for county, state in [county.split(",") for county in [scounties]]]
-    fulldf = censusViewer.view_df(county_names=selected_counties, states=[sstates], selected_cats=svars)
+    fulldf = censusViewer.build_dataframe(county_names=[scounties], states=[sstates], selected_cats=svars)
     cols = [{"name": i, "id": i} for i in fulldf.columns]
     dat = fulldf.to_dict('records')
     if pathname == '/apps/home':
