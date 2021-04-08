@@ -7,7 +7,7 @@ import dash_table
 
 from app import app
 
-vardeets = pd.read_csv('census_vars_V5.csv')
+vardeets = pd.read_csv('census_vars_V4.csv')
 cols = [{"name": column, "id": column} for column in vardeets.columns]
 dat = vardeets.to_dict('records')
 
